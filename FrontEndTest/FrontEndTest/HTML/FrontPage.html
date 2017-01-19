@@ -2,9 +2,43 @@
 <html>
 <head>
     <title></title>
-	<meta charset="utf-8" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet/less" type="text/css" href="StyleSheet1.less" />
+    <script src="scripts/jquery-3.1.1.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.5.1/less.min.js"></script>
 </head>
 <body>
-    
+    <h1 id="title">Flickr Public Feed</h1>
+    <div id="box1"></div>
+    <ul id="images"></ul>
+    <script>
+        (function () {
+            myfunction();
+            function myfunction() {
+                var url = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+                $.getJSON(url, {
+                    tagmode: "any",
+                    format: "json"
+                })
+                  .done(function (data) {
+                      console.log(data)
+                      $.each(data.items, function (i, item) {
+                          console.log(item.author)
+                          var li = document.createElement("li");
+                          var aAuthor = document.createElement("a");
+                          var author = item.author_id;
+
+                          aAuthor.innerHTML = "Author";
+                          aAuthor.setAttribute("href", "http://www.flickr.com/people/" + author);
+
+                          $("<img>").attr("src", item.media.m).appendTo(li);
+                          li.appendChild(aAuthor);
+                          $("#images").append(li);
+                      });
+                  });
+
+            }
+        })();
+    </script>
 </body>
 </html>
